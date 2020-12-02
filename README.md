@@ -1,5 +1,5 @@
-# Titel des Papers
-### Untertitel des Papers
+# Partisan Sources in Multi-Party Systems
+### An Analysis of Populistic Practices on Twitter in Seven EU Countries, Switzerland, and the UK
 
 This repository provides some data and scripts related to the paper:
 
