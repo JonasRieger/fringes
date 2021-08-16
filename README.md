@@ -18,4 +18,4 @@ For bug reports, comments and questions please use the [issue tracker](https://g
 * [data.table](https://github.com/Rdatatable/data.table) is used for managing and storing tabular data, e.g. texts and meta information.
 * [tm](https://cran.r-project.org/package=tm), [lubridate](https://lubridate.tidyverse.org/) and [utf8](https://github.com/patperry/r-utf8) are useful packages for preprocessing and managing text data.
 * [ggplot2](https://ggplot2.tidyverse.org/), [ggpubr](https://github.com/kassambara/ggpubr/), [ggrepel](https://github.com/slowkow/ggrepel) and [cividis](https://github.com/marcosci/cividis) are used to create the plots.
-* [beanplot](https://cran.r-project.org/package=beanplot) is used for visualize advanced boxplots.
+* [beanplot](https://cran.r-project.org/package=beanplot) is used to visualize advanced boxplots.
