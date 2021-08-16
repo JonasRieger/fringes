@@ -1,0 +1,156 @@
+---
+title: "Statistics of the textmeta Objects"
+output: pdf_document
+---
+
+```{r, include=FALSE}
+set.seed(1895)
+library(data.table)
+library(tosca)
+library(utf8)
+library(tm)
+library(beanplot)
+```
+
+```{r, fig.height=4, fig.show="hold", echo=FALSE}
+for(i in c("AT", "CH", "DK", "ESP", "FR", "GER", "IT", "NL", "UK")){
+  message(rep("#", nchar(i)+35*2), "\n", rep("#", nchar(i)+35*2), "\n",
+    rep("#", 34), " ", i, " ", rep("#", 34), "\n",
+    rep("#", nchar(i)+35*2), "\n", rep("#", nchar(i)+35*2), "\n")
+  
+  botdata = readRDS(file.path("data", i, "botdata.rds"))
+  url = readRDS(file.path("data", i, "urlExpanded.rds"))
+  
+  polit = fread(file = file.path("data", i, "politicians.csv"), na.strings = "", encoding = "UTF-8")
+  
+  onepercent = readLines(file.path("data", i, "onepercent.txt"))
+  
+  polit[, screen_name :=  gsub("@", "", twitter_handle)]
+  polit = polit[!is.na(screen_name) & party_short %in% onepercent]
+  if(i == "IT"){
+    message("do not consider party \"Independente\" because of lack of interpretation!")
+    polit = polit[party_short != "Indipendente"]
+  }
+  if(i == "DK"){
+    message("do not consider party \"Nye Borgerlige\" because of small amount of shared texts (7)!")
+    polit = polit[party_short != "NB"]
+  }
+  botdata[is.na(url_text), url_text := ""]
+  
+  message("number of scraped unique URLs: ", nrow(botdata),
+    " (", round(nrow(botdata)/length(unique(url$url_new_expanded))*100, 2), " %)")
+  message(" - successful: ", sum(botdata$url_text != ""),
+    " (", round(mean(botdata$url_text != "")*100, 2), " %)")
+  
+  message("table of scraped types of content:")
+  ges = table(botdata$url_type)
+  successful = table(factor(botdata[url_text != "", url_type], levels = names(ges)))
+  percent = round(successful/ges * 100, 2) 
+  print(cbind(ges, successful, percent))
+  
+  botdata = botdata[url_text != ""]
+  
+  message("number of invalid UTF8 texts: ", sum(!validUTF8(botdata$url_text)))
+  g = tryCatch(botdata[!validUTF8(url_text), url_text := as_utf8(url_text)],
+    error = function(e) "error")
+  if(is.character(g) && g == "error") message("error while recoding!")
+  message("number of invalid UTF8 texts after recoding: ", sum(!validUTF8(botdata$url_text)))
+  botdata = botdata[validUTF8(url_text)]
+  message("number of remaining observations: ", nrow(botdata))
+  
+  url = url[url_new_expanded %in% botdata$url_new_expanded]
+  message("number of associated tweets: ", nrow(url))
+  message("number of associated politicians: ", polit[screen_name %in% url$screen_name, .N],
+    " (", round(polit[screen_name %in% url$screen_name, .N]/nrow(polit)*100, 2), " % of considered politicians)")
+  polit = polit[screen_name %in% url$screen_name]
+  polit[, twitter_handle := NULL]
+  url = merge(url, polit, "screen_name")
+  meta = merge(url, botdata, "url_new_expanded")
+  message("number of observations after merging (filtering to considered politicians): ", nrow(meta))
+  meta[, id := status_id]
+  meta[, date := as.Date(created_at)]
+  meta[, title := NA_character_]
+  if(is.unsorted(meta$id)) setkey(meta, "id")
+  meta[, id := paste0(id, "-", unlist(lapply(table(factor(id, levels = unique(id))), seq_len)))]
+  # all(gsub("-(.*)?", "", meta$id) == meta$status_id) # TRUE
+  text = meta$url_text
+  utf8_umlaut = read.csv(file="UTF_umlaut.csv", stringsAsFactors = FALSE) 
+  for (z in seq_len(nrow(utf8_umlaut)))
+    text = gsub(x = text, pattern = utf8_umlaut$actual[z], replacement = utf8_umlaut$expected[z])
+  text = removeUmlauts(text)
+  names(text) = meta$id
+  
+  obj = textmeta(meta = as.data.frame(meta), text = text)
+  print(obj)
+  saveRDS(obj, file.path("data", i, "obj.rds"))
+  
+  message("Top 10 tweeted languages of media sources:")
+  print(head(sort(table(obj$meta$lang), decreasing = TRUE), 10))
+  lang = switch (i,
+    AT = "de",
+    CH = "de",
+    DK = "da",
+    ESP = "es",
+    FR = "fr",
+    GER = "de",
+    IT = "it",
+    NL = "nl"
+  )
+  message("keep ", lang, " texts!")
+  obj = filterID(obj, obj$meta$id[obj$meta$lang == lang])
+  print(obj)
+  
+  clean = cleanTexts(obj, sw = lang)
+  saveRDS(clean, file.path("data", i, "clean.rds"))
+  
+  clean$text = lapply(clean$text, function(x) x[!grepl("http", x)])
+  
+  wl = makeWordlist(clean$text)
+  message("top ten words:")
+  print(head(sort(wl$wordtable, decreasing = TRUE), 10))
+  vocab = wl$words[wl$wordtable > 10]
+  vocab = vocab[nchar(vocab) > 2]
+  vocab = vocab[nchar(vocab) < 40]
+  saveRDS(wl, file.path("data", i, "wordtable.rds"))
+  names(wl) = c("word", "count")
+  fwrite(wl, file.path("data", i, "wordtable.csv"))
+  saveRDS(vocab, file.path("data", i, "vocab.rds"))
+  writeLines(vocab, file.path("data", i, "vocab.txt"))
+  message("keep ", length(vocab), " words as vocabulary")
+  
+  clean$text = lapply(clean$text, function(x) x[x %in% vocab])
+  clean = filterID(clean, names(clean$text[lengths(clean$text) > 10]))
+  message("object after cleaning and several preprocessing steps:")
+  print(clean)
+  
+  message("subsampling of texts with more than 500 tokens: ", sum(lengths(clean$text) > 500))
+  clean$text[lengths(clean$text) > 500] = lapply(clean$text[lengths(clean$text) > 500],
+    function(x) sample(x, 500))
+  saveRDS(clean, file.path("data", i, "cleanprep.rds"))
+  
+  docs = LDAprep(clean$text, vocab)
+  saveRDS(docs, file.path("data", i, "docs.rds"))
+  
+  dir.create(file.path("data", i, "docs"))
+  for(id in names(docs)){
+    writeLines(as.character(docs[[id]][1,]+1), file.path("data", i, "docs", paste0(id, ".txt")))
+  }
+  
+  message("texts in final preprocessed corpus by party:")
+  print(table(obj$meta$party_short))
+  
+  splitted = split(lengths(clean$text), clean$meta$party_short)
+  beanplot(splitted, col = "grey", cutmin = 0, names = rep("",  length(names(splitted))),
+    log = "", ylim = c(0, 500), maxstripline = 0, cutmax = 500)
+  text(seq_along(names(splitted)), -40, names(splitted), srt = 45, xpd = TRUE, adj = 1, cex = 0.7)
+  mtext("Lengths of tweeted texts", 2, 2.5, cex = 0.7)
+  mtext(i, 3, 1, font = 2)
+  
+  message("Top 10 tweeted media sources: ")
+  print(head(sort(table(clean$meta$url_core), decreasing = TRUE), 10))
+  print(lapply(split(clean$meta$url_core, clean$meta$party_short),
+    function(x) head(sort(table("Top 5 url_core" = x), decreasing = TRUE), 5)))
+  
+  plot(clean, main = i, ylab = "count of texts per month")
+}
+```

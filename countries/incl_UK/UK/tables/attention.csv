@@ -1,0 +1,181 @@
+party_short,topic,Score
+Labour,T1.coronavirus,0.556774990526748
+Conservative,T1.coronavirus,0.512031625739357
+Liberal Democrats,T1.coronavirus,0.570983705058012
+Scottish National,T1.coronavirus,0.533816968343174
+Sinn Féin,T1.coronavirus,0.315914779444327
+DUP,T1.coronavirus,0.142441482551932
+Labour,T2.people,0.541475798885114
+Conservative,T2.people,0.497634195482215
+Liberal Democrats,T2.people,0.513597310903468
+Scottish National,T2.people,0.514749674217007
+Sinn Féin,T2.people,0.414576579345396
+DUP,T2.people,0.528142086856475
+Labour,T3.scotland,0.172015825299127
+Conservative,T3.scotland,0.598453705968758
+Liberal Democrats,T3.scotland,0.399849129657442
+Scottish National,T3.scotland,0.688273535342692
+Sinn Féin,T3.scotland,0.0197719200395665
+DUP,T3.scotland,0.187999677135162
+Labour,T4.police,0.526209938215966
+Conservative,T4.police,0.420117566682354
+Liberal Democrats,T4.police,0.494010819385017
+Scottish National,T4.police,0.340345191697405
+Sinn Féin,T4.police,0.577965433748909
+DUP,T4.police,0.520079031740995
+Labour,T5.coronavirus,0.492439552202474
+Conservative,T5.coronavirus,0.595461581662351
+Liberal Democrats,T5.coronavirus,0.503263121642643
+Scottish National,T5.coronavirus,0.53827133995688
+Sinn Féin,T5.coronavirus,0.136285096320283
+DUP,T5.coronavirus,0.508216515317667
+Labour,T6.register,0.567744157653496
+Conservative,T6.register,0.299581563066295
+Liberal Democrats,T6.register,0.507893661463838
+Scottish National,T6.register,0.510171876827327
+Sinn Féin,T6.register,0.544910549602671
+DUP,T6.register,0.416096963649719
+Labour,T7.contact,0.510452903096269
+Conservative,T7.contact,0.515454600736065
+Liberal Democrats,T7.contact,0.534653261841016
+Scottish National,T7.contact,0.519007420381009
+Sinn Féin,T7.contact,0.25689962259287
+DUP,T7.contact,0.544281876846829
+Labour,T8.transport,0.523440230286346
+Conservative,T8.transport,0.545311453995887
+Liberal Democrats,T8.transport,0.534177667280906
+Scottish National,T8.transport,0.404675276416071
+Sinn Féin,T8.transport,0.35112712482259
+DUP,T8.transport,0.521103581563751
+Labour,T9.nhs,0.527816032143922
+Conservative,T9.nhs,0.500385271147236
+Liberal Democrats,T9.nhs,0.523537090681102
+Scottish National,T9.nhs,0.420561187484651
+Sinn Féin,T9.nhs,0.517262526839455
+DUP,T9.nhs,0.527572214607511
+Labour,T10.per,0.537915657326834
+Conservative,T10.per,0.543974588387512
+Liberal Democrats,T10.per,0.513121858090325
+Scottish National,T10.per,0.536115373052437
+Sinn Féin,T10.per,0.2266832665652
+DUP,T10.per,0.48655187229216
+Labour,T11.school,0.520282487494307
+Conservative,T11.school,0.542022942933915
+Liberal Democrats,T11.school,0.557092194283004
+Scottish National,T11.school,0.308028332512012
+Sinn Féin,T11.school,0.280255018200538
+DUP,T11.school,0.532555150170016
+Labour,T12.music,0.36887700075671
+Conservative,T12.music,0.512541493420134
+Liberal Democrats,T12.music,0.307959507128097
+Scottish National,T12.music,0.47801464008255
+Sinn Féin,T12.music,0.555839017734785
+DUP,T12.music,0.572477630850521
+Labour,T13.businesses,0.430558658195915
+Conservative,T13.businesses,0.552761536709525
+Liberal Democrats,T13.businesses,0.508661793290333
+Scottish National,T13.businesses,0.509590496009128
+Sinn Féin,T13.businesses,0.471342278768036
+DUP,T13.businesses,0.528669351163688
+Labour,T14.labour,0.54075193429945
+Conservative,T14.labour,0.508012938633072
+Liberal Democrats,T14.labour,0.61502288460017
+Scottish National,T14.labour,0.519118234382855
+Sinn Féin,T14.labour,0.14504397584007
+DUP,T14.labour,0.257520072666648
+Labour,T15.political,0.508919794365057
+Conservative,T15.political,0.519640497096532
+Liberal Democrats,T15.political,0.51499479106874
+Scottish National,T15.political,0.534407434742222
+Sinn Féin,T15.political,0.504747903890609
+DUP,T15.political,0.500622912170174
+Labour,T16.children,0.547073362214971
+Conservative,T16.children,0.517640971123114
+Liberal Democrats,T16.children,0.552667330550935
+Scottish National,T16.children,0.502793890337193
+Sinn Féin,T16.children,0.392971594804015
+DUP,T16.children,0.385975079838709
+Labour,T17.said,0.565384162658412
+Conservative,T17.said,0.423944283755039
+Liberal Democrats,T17.said,0.569956546415331
+Scottish National,T17.said,0.543342347776351
+Sinn Féin,T17.said,0.239666863663301
+DUP,T17.said,0.264290511481101
+Labour,T18.guardian,0.652731297091791
+Conservative,T18.guardian,0.193926847484961
+Liberal Democrats,T18.guardian,0.57774727538683
+Scottish National,T18.guardian,0.511573027709328
+Sinn Féin,T18.guardian,0.294962255498064
+DUP,T18.guardian,0.0588012958892829
+Labour,T19.bbc,0.510882205208636
+Conservative,T19.bbc,0.527535556336165
+Liberal Democrats,T19.bbc,0.502942021604278
+Scottish National,T19.bbc,0.546761604924624
+Sinn Féin,T19.bbc,0.480092890016379
+DUP,T19.bbc,0.491178781541405
+Labour,T20.brexit,0.267856014822281
+Conservative,T20.brexit,0.287035043329686
+Liberal Democrats,T20.brexit,0.479062828025686
+Scottish National,T20.brexit,0.405627690063889
+Sinn Féin,T20.brexit,0.624487196590732
+DUP,T20.brexit,0.552249207369011
+Labour,T21.office,0.504069216981815
+Conservative,T21.office,0.354870158852568
+Liberal Democrats,T21.office,0.469910339646775
+Scottish National,T21.office,0.532060887733519
+Sinn Féin,T21.office,0.573344599779486
+DUP,T21.office,0.503061879088623
+Labour,T22.companies,0.537285109393207
+Conservative,T22.companies,0.54416728009487
+Liberal Democrats,T22.companies,0.503461804701643
+Scottish National,T22.companies,0.524689154235577
+Sinn Féin,T22.companies,0.265447492945969
+DUP,T22.companies,0.512822069417042
+Labour,T23.international,0.395655203097683
+Conservative,T23.international,0.505985727532162
+Liberal Democrats,T23.international,0.349764403039258
+Scottish National,T23.international,0.50152254106983
+Sinn Féin,T23.international,0.573972328273091
+DUP,T23.international,0.544282802102094
+Labour,T24.workers,0.640075505546305
+Conservative,T24.workers,0.409642012453847
+Liberal Democrats,T24.workers,0.471752597998319
+Scottish National,T24.workers,0.515427223881744
+Sinn Féin,T24.workers,0.455688992285259
+DUP,T24.workers,0.229900020694282
+Labour,T25.climate,0.528346278481392
+Conservative,T25.climate,0.521526081186231
+Liberal Democrats,T25.climate,0.58633123821414
+Scottish National,T25.climate,0.513928012244473
+Sinn Féin,T25.climate,0.235368626974469
+DUP,T25.climate,0.363841712268119
+Labour,T26.council,0.477765963513831
+Conservative,T26.council,0.514926008692149
+Liberal Democrats,T26.council,0.419101195627549
+Scottish National,T26.council,0.356180790620883
+Sinn Féin,T26.council,0.563695901188046
+DUP,T26.council,0.545870098492761
+Labour,T27.housing,0.621888955425921
+Conservative,T27.housing,0.520516076201132
+Liberal Democrats,T27.housing,0.534768226693905
+Scottish National,T27.housing,0.399726529624849
+Sinn Féin,T27.housing,0.20988841408461
+DUP,T27.housing,0.327345506364793
+Labour,T28.credit,0.52208716046846
+Conservative,T28.credit,0.52091713300068
+Liberal Democrats,T28.credit,0.436271329690592
+Scottish National,T28.credit,0.558807471701809
+Sinn Féin,T28.credit,0.231052861796616
+DUP,T28.credit,0.53696753624785
+Labour,T29.will,0.465200887445984
+Conservative,T29.will,0.596415845072598
+Liberal Democrats,T29.will,0.327040004581218
+Scottish National,T29.will,0.489404943232023
+Sinn Féin,T29.will,0.372921732435311
+DUP,T29.will,0.544489560311646
+Labour,T30.trade,0.258017641706792
+Conservative,T30.trade,0.524357894245432
+Liberal Democrats,T30.trade,0.451980615101274
+Scottish National,T30.trade,0.464389977529916
+Sinn Féin,T30.trade,0.56642917156766
+DUP,T30.trade,0.546814895130578

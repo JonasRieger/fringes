@@ -1,0 +1,128 @@
+---
+title: "General Statistics of Introductory Preprocessing Steps"
+output: pdf_document
+---
+
+```{r, include=FALSE}
+library(data.table)
+library(beanplot)
+library(lubridate)
+```
+
+```{r, fig.height=4, fig.show="hold", echo=FALSE}
+for(i in c("AT", "CH", "DK", "ESP", "FR", "GER", "IT", "NL", "UK")){
+  message(rep("#", nchar(i)+35*2), "\n", rep("#", nchar(i)+35*2), "\n",
+    rep("#", 34), " ", i, " ", rep("#", 34), "\n",
+    rep("#", nchar(i)+35*2), "\n", rep("#", nchar(i)+35*2), "\n")
+  
+  raw = readRDS(file.path("data", i, "raw.rds"))
+  botdata = readRDS(file.path("data", i, "botdata.rds"))
+  url = readRDS(file.path("data", i, "urlExpanded.rds"))
+  url_expand_table = readRDS(file.path("data", i, "url_expand_table.rds"))
+  
+  polit = fread(file = file.path("data", i, "politicians.csv"), na.strings = "", encoding = "UTF-8")
+  party_table = fread(file = file.path("data", i, "parties.csv"), encoding = "UTF-8")
+  
+  polit[, screen_name :=  gsub("@", "", twitter_handle)]
+  
+  onepercent = polit[, table(party_short) > 0.01*.N]
+  onepercent = names(onepercent[onepercent])
+  writeLines(onepercent, file.path("data", i, "onepercent.txt"))
+  
+  tmp = merge(
+    unique(raw[, c("screen_name", "verified", "friends_count", "followers_count")]),
+    polit[!is.na(twitter_handle), -c("twitter_profile_url", "twitter_handle")], "screen_name")
+  tmp[, followers_and_friends_count := followers_count + friends_count]
+  
+  message("number of politicians in parliament: ", nrow(polit))
+  message("number of politicians with twitter account: ", sum(!is.na(polit$twitter_handle)),
+    " (", round(mean(!is.na(polit$twitter_handle))*100, 2), " %)")
+  message("number of verified twitter accounts: ", sum(tmp$verified), 
+    " (", round(mean(tmp$verified)*100, 2), " %)")
+  message("number of parties exceeding one percent in parliament: ", length(onepercent),
+    " (", round(mean(polit$party_short %in% onepercent)*100, 2), " % of seats)")
+  tmp = tmp[party_short %in% onepercent]
+  message("number of corresponding twitter accounts in dataset : ", nrow(tmp),
+    " (", round(sum(tmp$party_short %in% onepercent)/nrow(polit)*100, 2), " % of seats)")
+  message("most of the following statistics are based on twitter accounts and parties
+  that exceed the one percent election threshold in parliament!")
+  polit = polit[party_short %in% onepercent]
+  message("parties that are not considered:")
+  print(party_table[!party_short %in% onepercent, party_short])
+  
+  print(rbind("followers (incl. friends)" = summary(tmp$followers_and_friends_count),
+    "friends" = summary(tmp$friends_count),
+    "percent friends" = round(summary(tmp$friends_count/tmp$followers_and_friends_count) * 100, 2)))
+  message("number of followers stratified by party: see below for plot")
+  splitted = split(tmp$followers_and_friends_count, tmp$party_short)
+  beanplot(splitted, col = "grey", cutmin = 0, names = rep("",  length(names(splitted))),
+    log = "y", ylim = c(1, max(tmp$followers_and_friends_count)*2.5), maxstripline = 0)
+  text(seq_along(names(splitted)), 0.3, names(splitted), srt = 45, xpd = TRUE, adj = 1, cex = 0.7)
+  mtext("Number of Followers (incl. Friends)\nper twitter Account - log scaled!!", 2, 2.5, cex = 0.7)
+  mtext(i, 3, 1, font = 2)
+  
+  message("table of parties:")
+  ges = table(polit$party_short)
+  twitter = table(factor(polit[!is.na(twitter_handle), party_short], levels = names(ges)))
+  percent = round(twitter/ges * 100, 2) 
+  print(cbind(ges, twitter, percent))
+  
+  message("number of unique tweets downloaded: ", length(unique(raw$status_id)))
+  rawN = length(unique(raw$status_id))
+  raw = raw[screen_name %in% polit$screen_name[!is.na(polit$screen_name)]]
+  message(" - filter to those that are considered: ", length(unique(raw$status_id)),
+    " (", round(length(unique(raw$status_id))/rawN*100, 2), " %)")
+  message(" - number of retweets: ", sum(raw$is_retweet),
+    " (", round(mean(raw$is_retweet)*100, 2), " %)")
+  message(" - number of quotes: ", sum(raw$is_quote),
+    " (", round(mean(raw$is_quote)*100, 2), " %)")
+  message(" - number of tweets per day: see below for plot")
+  rbind(favorite_count = summary(raw$favorite_count), retweet_count = summary(raw$retweet_count))
+  tab = table(floor_date(raw$created_at, "month"))
+  bp = barplot(tab, names.arg = "", main = i)
+  text(bp[month(names(tab)) == 1], 0, names(tab)[month(names(tab)) == 1], srt = 45, xpd = TRUE, cex = 0.7, adj = 1)
+  mtext("Frequency of tweets downloaded by Date of Creation", 2, 2.5, cex = 0.7)
+  
+  tmp = merge(
+    raw[, c("screen_name", "retweet_count", "favorite_count")],
+    polit[!is.na(twitter_handle), -c("twitter_profile_url", "twitter_handle")], "screen_name")
+  message("number of retweets stratified by party:")
+  print(do.call(rbind, lapply(split(tmp$retweet_count, tmp$party_short), 
+    function(x) round(summary(x), 2))))
+  message("number of favorites stratified by party:")
+  print(do.call(rbind, lapply(split(tmp$favorite_count, tmp$party_short), 
+    function(x) round(summary(x), 2))))
+  
+  message("the following statistics describes the non-filtered tweets!")
+  message("number of unique tweets with links: ", length(unique(url$status_id)), 
+    " (", round(length(unique(url$status_id))/rawN*100, 2), " %)")
+  message("number of links in tweets: ", nrow(url))
+  message("number of unique links in tweets (before expanding): ", nrow(url_expand_table))
+  message("number of successful requests (status_code == 200): ",
+    sum(url_expand_table$url_status_code == 200, na.rm = TRUE),
+    " (", round(sum(url_expand_table$url_status_code == 200, na.rm = TRUE)/nrow(url_expand_table)*100, 2), " %)")
+  message("number of successful expanded links (expanded URL != NA): ",
+    sum(!is.na(url_expand_table$url_new_expanded)),
+    " (", round(mean(!is.na(url_expand_table$url_new_expanded))*100, 2), " %)")
+  message("number of unique links in tweets (after expanding): ",
+    length(unique(url_expand_table$url_new_expanded)))
+  
+  message("number of unique links in tweets (after expanding and replacement of NAs): ",
+    length(unique(url$url_new_expanded)))
+  message("number of unique url_cores: ", length(unique(url$url_core)))
+  message("top ten of url_cores:")
+  print(head(sort(table(url$url_core), decreasing = TRUE), 10))
+  
+  message("number of scraped unique URLs: ", nrow(botdata),
+    " (", round(nrow(botdata)/length(unique(url$url_new_expanded))*100, 2), " %)")
+  tmp = botdata$url_text
+  tmp[is.na(tmp)] = ""
+  message(" - successful: ", sum(tmp != ""), " (", round(mean(tmp != "")*100, 2), " %)")
+  
+  message("table of scraped types of content:")
+  ges = table(botdata$url_type)
+  successful = table(factor(botdata$url_type[tmp != ""], levels = names(ges)))
+  percent = round(successful/ges * 100, 2) 
+  print(cbind(ges, successful, percent))
+}
+```
