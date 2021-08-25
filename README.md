@@ -4,7 +4,7 @@
 
 This repository provides some data and scripts related to the paper:
 
-* [von Nordheim, G., Rieger, J. & Kleinen, K. (2021).](https://doi.org/10.1080/21670811.2021.1970602) From the fringes to the core – An analysis of right-wing populists’ linking practices in seven EU parliaments and Switzerland. *Digital Journalism*.
+* [von Nordheim, G., Rieger, J. & Kleinen-von Königslöw, K. (2021).](https://doi.org/10.1080/21670811.2021.1970602) From the fringes to the core – An analysis of right-wing populists’ linking practices in seven EU parliaments and Switzerland. *Digital Journalism*.
 
 For bug reports, comments and questions please use the [issue tracker](https://github.com/JonasRieger/fringes/issues).
 
