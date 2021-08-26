@@ -37,5 +37,9 @@ The folder ``countries`` contains the following structure for all examined count
 
 The folder ``countries/incl_UK`` also contains the (differing) results including the results of United Kingdom, which was omitted from the paper for interpretational reasons.
 
+The ``misc`` folder contains various summary tables, e.g. in ``party_names.csv`` all party abbreviations are given - sorted by country - and in ``party_names2.csv`` sorted by abbreviation.
 
-
+At last the ``pdf`` folder contains three PDFs:
+* ``statistics_general.pdf`` gives an insight into descriptive statistics concerning the parliament and the raw data set (see also ``code/3statistics_general.Rmd``),
+* ``create_textmeta.pdf`` gives the process and statistics of the preprocessing (see also ``code/4create_textmeta.Rmd``),
+* ``plots.pdf`` contains some descriptive plots and further analytical plots based on the LDA results.
