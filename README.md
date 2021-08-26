@@ -19,3 +19,23 @@ For bug reports, comments and questions please use the [issue tracker](https://g
 * [tm](https://cran.r-project.org/package=tm), [lubridate](https://lubridate.tidyverse.org/) and [utf8](https://github.com/patperry/r-utf8) are useful packages for preprocessing and managing text data.
 * [ggplot2](https://ggplot2.tidyverse.org/), [ggpubr](https://github.com/kassambara/ggpubr/), [ggrepel](https://github.com/slowkow/ggrepel) and [cividis](https://github.com/marcosci/cividis) are used to create the plots.
 * [beanplot](https://cran.r-project.org/package=beanplot) is used to visualize advanced boxplots.
+
+## Usage
+Please note: For legal reasons the repository cannot provide all data. Please [let us know](https://github.com/JonasRieger/fringes/issues) if you feel that there is anything missing that we could add. 
+
+In the ``code`` folder you can view and trace the chronology of the R code used.
+
+The folder ``countries`` contains the following structure for all examined countries:
+* the subfolder ``docs`` contains the used preprocessed texts (bag of words with indices of vocabulary - see ``vocab.txt/.rds``),
+* the subfolder ``proto`` contains for all considered values K=20,25, ..., 75 the LDAPrototype models,
+* the subfolder ``tables`` contains some descriptive statistics in tabular form,
+* ``docs.rds`` contains the preprocessed texts in the form that can be used with the [ldaPrototype](https://github.com/JonasRieger/ldaPrototype) package,
+* ``onepercent.txt`` specifies the parties of the country that would pass an artificial 1% hurdle,
+* ``parties.csv`` and ``parties_col.csv`` contain information about party abbreviations and used colors for the party,
+* ``topwords30.csv`` contains the 50 topwords for all K=30 topics of the corresponding LDAPrototype model,
+* ``vocab.txt`` contains the corresponding vocabulary, ``vocab.rds`` as RDS file (see ``docs.rds``).
+
+The folder ``countries/incl_UK`` also contains the (differing) results including the results of United Kingdom, which was omitted from the paper for interpretational reasons.
+
+
+
